@@ -1,0 +1,327 @@
+/* =====================================================================
+   Studio Matyas Enz – Stylesheet
+   Alle Masse auf Desktop beziehen sich auf das 1920 px breite Layout
+   aus dem PDF: 1 Einheit (--u) = 1/1920 der Fensterbreite.
+   ===================================================================== */
+
+/* Schrift: Geist Mono (frei, SIL Open Font License), selbst gehostet.
+   Die Datei liegt in /fonts – es werden keine Daten an Google übertragen. */
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../fonts/GeistMono-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --u: calc(100vw / 1920);
+  --schrift: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --schwarz: #000;
+  --weiss: #fff;
+  --text: max(11px, calc(15 * var(--u)));
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--schrift);
+  font-weight: 400;
+  font-size: var(--text);
+  line-height: 1.2;
+  color: var(--schwarz);
+  background: var(--weiss);
+  -webkit-font-smoothing: antialiased;
+}
+
+a, [data-link] { color: inherit; text-decoration: none; cursor: pointer; }
+
+/* Bildschutz: Bilder lassen sich nicht anklicken, markieren oder ziehen
+   (Rechtsklick landet auf einer leeren Fläche, siehe js/schutz.js)     */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+.bildfeld, .hintergrund, .overlay {
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* Fette Stellen: Geist Mono SemiBold. Für kräftiger 700, für feiner 500. */
+:root { --fett: 600; }
+b, strong, .eintrag-titel, .rubrik h2 {
+  font-weight: var(--fett);
+}
+
+/* Inverse Hervorhebung beim Überfahren von Links */
+.inv:hover, .inv:focus-visible {
+  background: var(--schwarz);
+  color: var(--weiss);
+  outline: none;
+}
+
+/* =====================================================================
+   LANDING PAGE
+   ===================================================================== */
+
+body.landing {
+  background: var(--schwarz);
+  color: var(--weiss);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.landing .hintergrund {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/landing.jpg") 64% 50% / cover no-repeat;
+  /* 64 %: Lampe bleibt im Hochformat sichtbar */
+}
+
+.landing .ecke {
+  position: fixed;
+  z-index: 2;
+  font-size: max(12px, calc(15.75 * var(--u)));
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.landing .ecke.links  { left:  calc(20 * var(--u)); bottom: calc(16 * var(--u)); }
+.landing .ecke.rechts { right: calc(20 * var(--u)); bottom: calc(16 * var(--u)); }
+
+.landing .plus {
+  position: fixed;
+  z-index: 2;
+  top: calc(14 * var(--u));
+  right: calc(18 * var(--u));
+  font-size: max(30px, calc(42 * var(--u)));
+  line-height: 1;
+  font-weight: 400;
+  padding: 0 0.08em;
+}
+
+/* auf dunklem Bild: weiss hinterlegt, Schrift schwarz */
+.landing .inv:hover, .landing .inv:focus-visible {
+  background: var(--weiss);
+  color: var(--schwarz);
+}
+
+/* =====================================================================
+   INDEX
+   ===================================================================== */
+
+.index-seite {
+  display: grid;
+  grid-template-columns:
+    calc(21 * var(--u))               /* Rand links            */
+    calc(736 * var(--u))              /* Bildspalte            */
+    calc(95.45 * var(--u))            /* Abstand               */
+    calc(152.85 * var(--u))           /* Rubrik                */
+    minmax(0, 1fr)                    /* Einträge              */
+    calc(21 * var(--u));              /* Rand rechts           */
+  min-height: 100vh;
+}
+
+/* ---- linke Spalte: bleibt beim Scrollen stehen ---- */
+.spalte-links {
+  grid-column: 2;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  height: 100dvh;
+  padding-top: calc(17.5 * var(--u));
+  display: flex;
+  flex-direction: column;
+}
+
+.kopf p { line-height: calc(26 * var(--u)); min-height: 1.2em; }
+.kopf .m { display: inline-block; width: calc(36 * var(--u)); min-width: 3ch; }
+
+.bildfeld {
+  position: relative;
+  margin-top: calc(7 * var(--u));
+  /* 736 × 925 wie im PDF; schrumpft, wenn das Fenster niedrig ist */
+  height: min(calc(925 * var(--u)), calc(100dvh - 102.5 * var(--u) - 3.2em));
+  aspect-ratio: 736 / 925;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.bildfeld .bild {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+}
+.bildfeld .bild { transition: opacity 0.2s ease; }   /* sanftes Überblenden */
+.bildfeld .bild.sichtbar { opacity: 1; }
+.bildfeld.einpassen .bild { background-size: contain; }
+
+.credit {
+  position: absolute;
+  right: calc(17 * var(--u));
+  bottom: calc(12.4 * var(--u));
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font-size: var(--text);
+  line-height: 1.4;
+  z-index: 2;
+  max-height: calc(100% - 24 * var(--u));
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copy { margin-top: calc(14 * var(--u)); }
+
+/* ---- rechte Seite: Liste ---- */
+.liste {
+  grid-column: 4 / 6;
+  padding-top: calc(17.5 * var(--u));
+  padding-bottom: calc(17.5 * var(--u));
+}
+
+.rubrik {
+  display: grid;
+  grid-template-columns: calc(152.85 * var(--u)) minmax(0, 1fr);
+  margin-bottom: calc(60.3 * var(--u));
+}
+
+.rubrik:last-child { margin-bottom: 0; }
+
+.rubrik h2 {
+  font-size: inherit;
+  font-weight: var(--fett);
+  line-height: calc(18.6 * var(--u));
+}
+
+.rubrik ul { list-style: none; }
+
+.rubrik li {
+  line-height: calc(18.6 * var(--u));
+  margin-bottom: calc(20.85 * var(--u));
+  padding-left: 2ch;            /* hängender Einzug bei Umbruch */
+  text-indent: -2ch;
+}
+.rubrik li:last-child { margin-bottom: 0; }
+
+.eintrag-titel {
+  font-weight: var(--fett);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0.05em 0;
+}
+
+/* Einträge mit Bildern */
+.eintrag-titel.hat-bilder { cursor: pointer; }
+.eintrag-titel.hat-bilder.an {
+  color: var(--weiss);
+}
+.eintrag-titel:focus-visible { outline: 1px dotted currentColor; outline-offset: 2px; }
+
+/* Wenn Zeilenhöhe in px kleiner wäre als Schrift (kleine Fenster) */
+@media (max-width: 1370px) {
+  .kopf p,
+  .rubrik h2,
+  .rubrik li { line-height: 1.35; }
+  .rubrik li { margin-bottom: 1.05em; }
+  .rubrik { margin-bottom: 2.4em; }
+  .kopf .m { width: 3ch; }
+}
+
+/* ---- Overlay für Bilder auf schmalen Bildschirmen ---- */
+.overlay { display: none; }
+
+/* =====================================================================
+   MOBIL / SCHMALE FENSTER
+   ===================================================================== */
+
+@media (max-width: 860px) {
+  :root { --text: 12px; }
+
+  .index-seite {
+    display: block;
+    padding: 20px 16px 40px;
+  }
+
+  .spalte-links {
+    position: static;
+    height: auto;
+    padding-top: 0;
+  }
+  .spalte-links .bildfeld,
+  .spalte-links .copy { display: none; }
+
+  .kopf { margin-bottom: 36px; }
+  .kopf p { line-height: 1.5; }
+
+  .liste { padding: 0; }
+
+  .rubrik {
+    display: block;
+    margin-bottom: 36px;
+  }
+  .rubrik h2 { margin-bottom: 14px; line-height: 1.4; }
+  .rubrik li { line-height: 1.4; margin-bottom: 12px; }
+
+  .copy-mobil { display: block !important; margin-top: 8px; }
+
+  /* Bilder erscheinen als Vollbild-Ebene */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: var(--weiss);
+    padding: 56px 16px 24px;
+    flex-direction: column;
+  }
+  .overlay.offen { display: flex; }
+  .overlay .bildfeld {
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 120px);
+  }
+  .overlay .schliessen {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 30px;
+    line-height: 1;
+    transform: rotate(45deg);
+    background: none;
+    border: 0;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .overlay .overlay-titel { margin-top: 12px; }
+
+  .landing .ecke.links  { left: 14px; bottom: 14px; }
+  .landing .ecke.rechts { right: 14px; bottom: 14px; }
+  .landing .plus { top: 10px; right: 12px; }
+}
+
+@media (max-width: 520px) {
+  /* Schmale Bildschirme: Name oben, Adresse darunter, beide links */
+  .landing .ecke.links  { bottom: 36px; }
+  .landing .ecke.rechts { bottom: 14px; right: auto; left: 14px; }
+}
+
+.copy-mobil { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}

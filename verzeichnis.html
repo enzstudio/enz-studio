@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Index – Studio Matyas Enz</title>
+  <meta name="description" content="Projekte, Publikationen und Lehre von Studio Matyas Enz MSc ETH Arch, Zürich.">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="favicon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preload" href="fonts/GeistMono-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="index-seite">
+
+    <aside class="spalte-links">
+      <div class="kopf">
+        <p><a class="inv" data-link="index.html"><b>Studio Matyas Enz MSc ETH Arch</b></a></p>
+        <p><a class="inv" data-link="https://www.google.com/maps/search/?api=1&amp;query=Am+Wasser+24%2C+8049+Z%C3%BCrich" data-neu>Am Wasser 24, CH-8049 Zürich</a></p>
+        <p><span class="m">M:</span><a class="inv" data-link="mailto:info@enz.studio">info@enz.studio</a></p>
+      </div>
+
+      <div class="bildfeld" id="bildfeld" aria-live="polite"></div>
+
+      <p class="copy">© <span class="jahr">2026</span></p>
+    </aside>
+
+    <section class="liste" id="liste" aria-label="Index">
+      <!-- wird aus js/daten.js aufgebaut -->
+    </section>
+
+    <p class="copy-mobil">© <span class="jahr">2026</span></p>
+
+  </main>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Bilder">
+    <button class="schliessen" id="schliessen" aria-label="Schliessen">+</button>
+    <div class="bildfeld" id="bildfeld-mobil"></div>
+    <p class="overlay-titel" id="overlay-titel"></p>
+  </div>
+
+  <noscript><p style="padding:20px">Bitte JavaScript aktivieren, um den Index zu sehen.</p></noscript>
+
+  <script src="js/daten.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/schutz.js"></script>
+</body>
+</html>
