@@ -95,5 +95,5 @@ const PARTNER = {
   "TEN": "https://www.ten.studio",
   "ALIAS": "https://alias.ooo",
   "Boris Gusic": "https://buero.llc",
-   "Studio Proxi": "https://studioproxi.ch",
+  "Studio Proxi": "https://studioproxi.ch",
 };
